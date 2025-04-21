@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TanzirSurvey</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #fff;
+    }
+    header {
+      background: #1f6feb;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #161b22;
+      gap: 20px;
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+    section {
+      padding: 20px;
+    }
+    .card {
+      background: #21262d;
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 10px;
+    }
+    iframe {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+    }
+    .btn {
+      background: #238636;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .btn:hover {
+      background: #2ea043;
+    }
+  </style>
+</head>
+<body>
+  <header>TanzirSurvey</header>
+  <nav>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#offerwalls">Offerwalls</a>
+    <a href="#bonus">Daily Bonus</a>
+    <a href="#withdraw">Withdraw</a>
+    <a href="#referral">Referral</a>
+    <a href="#spin">Spin & Win</a>
+    <a href="#scratch">Scratch</a>
+    <a href="#invest">Investment</a>
+  </nav>  <section id="dashboard" class="card">
+    <h2>Welcome, <span id="usernameDisplay">Guest</span></h2>
+    <p>Points: <span id="points">0</span></p>
+  </section>  <section id="offerwalls" class="card">
+    <h2>BitLabs Offerwall</h2>
+    <iframe src="https://web.bitlabs.ai/?token=5567daf9-0d0c-4824-8a96-91562e976e13&uid=guest"></iframe>
+    <h2>CPX Research Offerwall</h2>
+    <iframe height="1000" src="https://offers.cpx-research.com/index.php?app_id=26901&ext_user_id=guest&secure_hash=demo123&username=guest&email=guest@example.com"></iframe>
+  </section>  <section id="bonus" class="card">
+    <h2>Daily Bonus</h2>
+    <button class="btn" onclick="claimDailyBonus()">Claim +25 Points</button>
+  </section>  <section id="withdraw" class="card">
+    <h2>Withdraw</h2>
+    <p>Select Method: 
+      <select id="method">
+        <option value="bKash">bKash</option>
+        <option value="Nagad">Nagad</option>
+        <option value="PayPal">PayPal</option>
+      </select>
+    </p>
+    <input type="text" id="account" placeholder="Enter account">
+    <button class="btn" onclick="withdrawRequest()">Request Withdraw</button>
+  </section>  <section id="referral" class="card">
+    <h2>Referral System</h2>
+    <p>Your Code: <span id="refCode">guest</span></p>
+    <p>Earn 50 points for each friend!</p>
+  </section>  <section id="spin" class="card">
+    <h2>Spin & Win</h2>
+    <button class="btn" onclick="spinNow()">Spin</button>
+    <p id="spinResult"></p>
+  </section>  <section id="scratch" class="card">
+    <h2>Scratch Card</h2>
+    <button class="btn" onclick="scratchNow()">Scratch</button>
+    <p id="scratchResult"></p>
+  </section>  <section id="invest" class="card">
+    <h2>Investment System</h2>
+    <input type="number" id="investPoints" placeholder="Enter points to invest">
+    <button class="btn" onclick="investPointsFunc()">Invest</button>
+    <p id="investStatus"></p>
+  </section>  <script>
+    let points = localStorage.getItem('points') || 0;
+    document.getElementById('points').textContent = points;
+
+    function updatePoints(val) {
+      points = parseInt(points) + val;
+      localStorage.setItem('points', points);
+      document.getElementById('points').textContent = points;
+    }
+
+    function claimDailyBonus() {
+      updatePoints(25);
+      alert('You got +25 points!');
+    }
+
+    function withdrawRequest() {
+      const method = document.getElementById('method').value;
+      const account = document.getElementById('account').value;
+      alert(`Withdraw requested via ${method} to ${account}`);
+    }
+
+    function spinNow() {
+      const reward = Math.floor(Math.random() * 96) + 5;
+      updatePoints(reward);
+      document.getElementById('spinResult').textContent = `You won ${reward} points!`;
+    }
+
+    function scratchNow() {
+      const reward = Math.floor(Math.random() * 191) + 10;
+      updatePoints(reward);
+      document.getElementById('scratchResult').textContent = `You scratched ${reward} points!`;
+    }
+
+    function investPointsFunc() {
+      const val = parseInt(document.getElementById('investPoints').value);
+      if (val > 0 && val <= points) {
+        updatePoints(-val);
+        setTimeout(() => {
+          const profit = val + Math.floor(val * 0.25);
+          updatePoints(profit);
+          document.getElementById('investStatus').textContent = `Invested ${val}, returned ${profit} points!`;
+        }, 3000);
+      } else {
+        alert('Invalid amount');
+      }
+    }
+  </script></body>
+</html>
